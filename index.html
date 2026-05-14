@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SS Shopping</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#f1f3f6;
+}
+
+/* HEADER */
+
+header{
+background:#2874f0;
+padding:12px 30px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+.search-box{
+width:45%;
+position:relative;
+}
+
+.search-box input{
+width:100%;
+padding:12px 15px;
+border:none;
+border-radius:3px;
+font-size:15px;
+}
+
+.search-box i{
+position:absolute;
+right:15px;
+top:14px;
+color:#2874f0;
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav-right button{
+padding:10px 18px;
+border:none;
+background:white;
+color:#2874f0;
+font-weight:bold;
+border-radius:3px;
+cursor:pointer;
+}
+
+.cart{
+color:white;
+font-size:18px;
+font-weight:bold;
+}
+
+/* CATEGORY */
+
+.categories{
+background:white;
+display:flex;
+justify-content:space-around;
+padding:15px;
+flex-wrap:wrap;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cat{
+text-align:center;
+cursor:pointer;
+}
+
+.cat img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:50%;
+}
+
+.cat p{
+margin-top:8px;
+font-weight:bold;
+font-size:14px;
+}
+
+/* BANNER */
+
+.banner{
+margin:15px;
+}
+
+.banner img{
+width:100%;
+height:350px;
+object-fit:cover;
+border-radius:10px;
+}
+
+/* PRODUCTS */
+
+.products{
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.card h2{
+font-size:20px;
+margin:10px 0;
+}
+
+.price{
+color:green;
+font-size:22px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.rating{
+background:green;
+color:white;
+display:inline-block;
+padding:4px 8px;
+border-radius:5px;
+font-size:14px;
+margin-bottom:10px;
+}
+
+.extras li{
+list-style:none;
+background:#f1f1f1;
+padding:6px;
+margin:5px 0;
+border-radius:5px;
+}
+
+.btns{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.btns button{
+flex:1;
+padding:10px;
+border:none;
+color:white;
+border-radius:5px;
+cursor:pointer;
+font-size:15px;
+}
+
+.cart-btn{
+background:#ff9f00;
+}
+
+.buy-btn{
+background:#fb641b;
+}
+
+/* POPUP */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.popup-box{
+background:white;
+width:400px;
+padding:25px;
+border-radius:10px;
+}
+
+.popup-box h2{
+margin-bottom:20px;
+text-align:center;
+}
+
+.popup-box input,
+.popup-box textarea,
+.popup-box select{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+.popup-box button{
+width:100%;
+padding:12px;
+border:none;
+background:#2874f0;
+color:white;
+font-size:18px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.close{
+background:red !important;
+margin-top:10px;
+}
+
+/* FOOTER */
+
+footer{
+background:#172337;
+color:white;
+padding:40px;
+margin-top:30px;
+text-align:center;
+}
+
+@media(max-width:768px){
+
+header{
+flex-direction:column;
+gap:15px;
+}
+
+.search-box{
+width:100%;
+}
+
+.banner img{
+height:200px;
+}
+
+.popup-box{
+width:90%;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+<div class="logo">SS Shopping</div>
+
+<div class="search-box">
+<input type="text" id="search" placeholder="Search for products..." onkeyup="searchProducts()">
+<i class="fa fa-search"></i>
+</div>
+
+<div class="nav-right">
+<button onclick="openAccount()">Login</button>
+
+<div class="cart">
+<i class="fa fa-shopping-cart"></i>
+Cart: <span id="cart">0</span>
+</div>
+
+</div>
+
+</header>
+
+<!-- CATEGORIES -->
+
+<div class="categories">
+
+<div class="cat">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300">
+<p>Fashion</p>
+</div>
+
+<div class="cat">
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300">
+<p>Mobiles</p>
+</div>
+
+<div class="cat">
+<img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300">
+<p>Laptops</p>
+</div>
+
+<div class="cat">
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300">
+<p>Electronics</p>
+</div>
+
+<div class="cat">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300">
+<p>Shoes</p>
+</div>
+
+</div>
+
+<!-- BANNER -->
+
+<div class="banner">
+<img src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?w=1200">
+</div>
+
+<!-- PRODUCTS -->
+
+<div class="products" id="products"></div>
+
+<!-- BUY POPUP -->
+
+<div class="popup" id="popup">
+<div class="popup-box">
+
+<h2>Order Details</h2>
+
+<input type="text" placeholder="Full Name">
+<input type="text" placeholder="Mobile Number">
+
+<textarea placeholder="Address"></textarea>
+
+<select>
+<option>Cash On Delivery</option>
+<option>UPI Payment</option>
+<option>Credit Card</option>
+</select>
+
+<button onclick="placeOrder()">Place Order</button>
+
+<button class="close" onclick="closePopup()">Close</button>
+
+</div>
+</div>
+
+<!-- ACCOUNT POPUP -->
+
+<div class="popup" id="accountPopup">
+<div class="popup-box">
+
+<h2>Create Account</h2>
+
+<input type="text" placeholder="Full Name">
+<input type="email" placeholder="Email">
+<input type="text" placeholder="Mobile Number">
+<input type="password" placeholder="Password">
+
+<button onclick="createAccount()">Create Account</button>
+
+<button class="close" onclick="closeAccount()">Close</button>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+<h2>SS Shopping</h2>
+<p>India's Best Shopping Website</p>
+</footer>
+
+<script>
+
+let cart = 0;
+
+const products = [
+
+{
+name:"Shirt",
+price:"₹499",
+image:"https://images.unsplash.com/photo-1603252109303-2751441dd157?w=500",
+extras:["Cotton","Soft","Brand"]
+},
+
+{
+name:"Shoes",
+price:"₹999",
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
+extras:["Running","Stylish","Comfort"]
+},
+
+{
+name:"Laptop",
+price:"₹45000",
+image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500",
+extras:["Gaming","SSD","Fast"]
+},
+
+{
+name:"Mobile",
+price:"₹12999",
+image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500",
+extras:["5G","Camera","Battery"]
+},
+
+{
+name:"Watch",
+price:"₹999",
+image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
+extras:["Stylish","Digital","Waterproof"]
+},
+
+{
+name:"Headphones",
+price:"₹799",
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+extras:["Bass","Wireless","Music"]
+},
+
+{
+name:"Keyboard",
+price:"₹1499",
+image:"https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=500",
+extras:["RGB","Gaming","USB"]
+},
+
+{
+name:"Mouse",
+price:"₹699",
+image:"https://images.unsplash.com/photo-1527814050087-3793815479db?w=500",
+extras:["Wireless","Smooth","Fast"]
+},
+
+{
+name:"Backpack",
+price:"₹1199",
+image:"https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=500",
+extras:["Travel","Waterproof","Large"]
+},
+
+{
+name:"Sunglasses",
+price:"₹599",
+image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500",
+extras:["UV","Stylish","Black"]
+},
+
+{
+name:"Camera",
+price:"₹35000",
+image:"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500",
+extras:["HD","Lens","Photography"]
+},
+
+{
+name:"Speaker",
+price:"₹2499",
+image:"https://images.unsplash.com/photo-1589003077984-894e133dabab?w=500",
+extras:["Bluetooth","Bass","Portable"]
+},
+
+{
+name:"Tablet",
+price:"₹15999",
+image:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500",
+extras:["Android","HD","Battery"]
+},
+
+{
+name:"Smart TV",
+price:"₹29999",
+image:"https://images.unsplash.com/photo-1593784991095-a205069470b6?w=500",
+extras:["4K","LED","Smart"]
+},
+
+{
+name:"Printer",
+price:"₹8999",
+image:"https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500",
+extras:["Color","WiFi","Fast"]
+},
+
+{
+name:"Bottle",
+price:"₹299",
+image:"https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500",
+extras:["Steel","Cool","Strong"]
+},
+
+{
+name:"Chair",
+price:"₹3499",
+image:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500",
+extras:["Comfort","Office","Soft"]
+},
+
+{
+name:"Fan",
+price:"₹1999",
+image:"https://images.unsplash.com/photo-1578898887932-dce23a595ad4?w=500",
+extras:["Cool","Silent","Power"]
+},
+
+{
+name:"AirPods",
+price:"₹2499",
+image:"https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500",
+extras:["Wireless","Music","Noise Cancel"]
+},
+
+{
+name:"Gaming Console",
+price:"₹39999",
+image:"https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=500",
+extras:["Gaming","HD","Controller"]
+}
+
+];
+
+function loadProducts(items){
+
+let box = document.getElementById("products");
+
+box.innerHTML = "";
+
+items.forEach(p=>{
+
+box.innerHTML += `
+
+<div class="card">
+
+<img src="${p.image}">
+
+<h2>${p.name}</h2>
+
+<div class="price">${p.price}</div>
+
+<div class="rating">4.5 ★</div>
+
+<ul class="extras">
+<li>${p.extras[0]}</li>
+<li>${p.extras[1]}</li>
+<li>${p.extras[2]}</li>
+</ul>
+
+<div class="btns">
+<button class="cart-btn" onclick="addCart()">Add Cart</button>
+<button class="buy-btn" onclick="buyNow()">Buy Now</button>
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+function searchProducts(){
+
+let s = document.getElementById("search").value.toLowerCase();
+
+let filtered = products.filter(p =>
+p.name.toLowerCase().includes(s)
+);
+
+loadProducts(filtered);
+
+}
+
+function addCart(){
+
+cart++;
+
+document.getElementById("cart").innerText = cart;
+
+}
+
+function buyNow(){
+
+document.getElementById("popup").style.display = "flex";
+
+}
+
+function closePopup(){
+
+document.getElementById("popup").style.display = "none";
+
+}
+
+function placeOrder(){
+
+alert("Order Placed Successfully");
+
+document.getElementById("popup").style.display = "none";
+
+}
+
+function openAccount(){
+
+document.getElementById("accountPopup").style.display = "flex";
+
+}
+
+function closeAccount(){
+
+document.getElementById("accountPopup").style.display = "none";
+
+}
+
+function createAccount(){
+
+alert("Account Created Successfully");
+
+document.getElementById("accountPopup").style.display = "none";
+
+}
+
+loadProducts(products);
+
+</script>
+
+</body>
+</html>
